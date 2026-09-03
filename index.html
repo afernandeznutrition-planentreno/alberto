@@ -153,7 +153,10 @@ header{
   padding:1px 6px;font-size:10px;font-weight:700;vertical-align:middle;margin-left:4px}
 
 /* ---------- síntomas ---------- */
-/* ---------- contador de la comida libre ---------- */
+/* ---------- buscador y contador de la comida libre ---------- */
+.buscador{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+  padding:11px 13px;font-size:14px;-webkit-appearance:none}
+.buscador:focus{outline:none;border-color:var(--acc)}
 .stepper{display:flex;align-items:center;gap:8px;flex:none}
 .stepper button{width:30px;height:30px;border-radius:9px;background:var(--card2);
   border:1px solid var(--line);color:var(--txt);font-size:17px;font-weight:700;cursor:pointer;
@@ -721,66 +724,127 @@ const DEFAULT_PLAN = {
       comidas:["desayuno","postentreno","merienda"] }
   ],
 
-  /* --- COMIDA LIBRE: raciones aproximadas para lo que no está en el plan --- */
+  /* --- COMIDA LIBRE: repertorio de platos caseros y de salto de dieta.
+     No lleva ingredientes sueltos que ya están en el plan: esto es para lo de fuera. --- */
   libre: {
     nombre:"Comida libre · fuera del plan", icon:"➕",
-    nota:"Elige las raciones que más se parezcan a lo que has comido. Son estimaciones de ración casera o de bar, con un margen de ±20 %: sirven para no perder el control del día, no para cuadrar al gramo.",
+    nota:"Busca el plato que más se parezca a lo que has comido y súmalo. Son estimaciones de ración casera o de restaurante, con un margen de ±20 %: sirven para no perder el control del día, no para cuadrar al gramo.",
     cats:[
-      { cat:"Carnes, pescados y huevos", items:[
-        ["l_pechuga","Pechuga de pollo a la plancha","1 unidad ~150 g",230,42,0,6],
-        ["l_filete","Filete de ternera o cerdo","1 unidad ~150 g",280,38,0,14],
-        ["l_pescado","Pescado a la plancha o al horno","1 filete ~150 g",190,32,0,7],
-        ["l_huevofrito","Huevo frito","1 unidad",110,7,0,9],
-        ["l_tortilla2","Tortilla francesa de 2 huevos","1 unidad",200,13,1,16],
-        ["l_atunlata","Lata de atún","1 lata escurrida",110,25,0,1],
-        ["l_jamon","Ración de jamón o embutido","100 g",240,30,0,13],
-        ["l_albondigas","Albóndigas o carne guisada","ración ~200 g",380,26,10,25]
+      { cat:"Platos de cuchara y guisos", items:[
+        ["l_lentchor","Lentejas con chorizo y morcilla","plato hondo",550,28,55,24],
+        ["l_lentverd","Lentejas con verduras","plato hondo",400,24,58,6],
+        ["l_garbespi","Garbanzos con espinacas","plato hondo",430,22,55,13],
+        ["l_potaje","Potaje de garbanzos con bacalao","plato hondo",480,30,50,16],
+        ["l_fabada","Fabada o alubias con compango","plato hondo",700,32,50,38],
+        ["l_cocido","Cocido o puchero con carne","plato completo",750,45,55,38],
+        ["l_sopapuch","Sopa de puchero con fideos y picadillo","plato",250,15,25,9],
+        ["l_caldo","Caldo con fideos","plato",150,8,20,4],
+        ["l_cremaverd","Crema de verduras","plato",120,4,15,5],
+        ["l_salmorejo","Gazpacho o salmorejo","vaso grande ~250 g",200,3,15,14],
+        ["l_guisantes","Guisantes o habitas con jamón","plato",350,18,35,14]
       ]},
-      { cat:"Cuchara y guarniciones", items:[
-        ["l_patata","Ración de patata cocida o asada","guarnición ~200 g",175,4,38,1],
-        ["l_arroz","Plato de arroz","~250 g cocido",320,6,68,2],
-        ["l_pasta","Plato de pasta","~250 g cocida",380,13,72,4],
-        ["l_lentejas","Legumbre con verdura","plato ~350 g",400,24,58,6],
-        ["l_legumbrechorizo","Legumbre con chorizo o morcilla","plato ~350 g",550,28,55,24],
-        ["l_paella","Paella o arroz con cosas","plato ~350 g",480,22,60,16],
-        ["l_sopa","Sopa o caldo con fideos","~300 ml",150,8,20,4],
-        ["l_crema","Crema de verduras","~300 ml",120,4,15,5],
-        ["l_ensalada","Ensalada con aliño","plato",150,3,8,12],
+      { cat:"Arroces y pastas caseros", items:[
+        ["l_paella","Paella o arroz con pollo y verduras","plato",550,25,65,18],
+        ["l_arrozcub","Arroz a la cubana, con huevo y plátano","plato",600,15,90,20],
+        ["l_macarrones","Macarrones con tomate y chorizo","plato",620,25,70,26],
+        ["l_carbonara","Espaguetis a la carbonara","plato",700,25,70,35],
+        ["l_bolonesa","Espaguetis a la boloñesa","plato",600,28,72,20],
+        ["l_lasana","Lasaña o canelones","ración",650,30,55,33],
+        ["l_arroznegro","Fideuá o arroz negro","plato",550,25,60,20],
+        ["l_pastafria","Ensalada de pasta o de arroz con mayonesa","plato",480,15,50,24]
+      ]},
+      { cat:"Carnes y pescados guisados o al horno", items:[
+        ["l_carnetom","Carne con tomate","ración",450,32,12,30],
+        ["l_albondigas","Albóndigas en salsa","ración",420,26,15,27],
+        ["l_polloajillo","Pollo al ajillo","ración",400,35,5,26],
+        ["l_polloasado","Pollo asado con patatas","plato",650,40,45,33],
+        ["l_estofado","Estofado de ternera con patatas","plato",600,38,40,30],
+        ["l_carrilleras","Carrilleras o rabo de toro","ración",550,40,10,38],
+        ["l_costillas","Costillas, secreto o panceta a la brasa","ración",700,40,5,58],
+        ["l_bacalao","Bacalao con tomate","ración",350,32,12,18],
+        ["l_merluzaverde","Merluza en salsa verde","ración",320,34,10,15],
+        ["l_atunenceb","Atún o caballa encebollada","ración",380,35,12,20],
+        ["l_calamares","Chocos o calamares en salsa","ración",350,30,15,18],
+        ["l_pescaito","Pescaíto frito","ración",500,32,25,30],
+        ["l_boquerones","Boquerones fritos o en adobo","ración",420,28,20,26]
+      ]},
+      { cat:"Tortillas, huevos y verduras rellenas", items:[
+        ["l_tortillapat","Tortilla de patatas","2 porciones",450,15,35,28],
+        ["l_huevosrotos","Huevos rotos con jamón","plato",550,25,35,35],
+        ["l_revuelto","Revuelto de setas, gambas o jamón","plato",350,22,5,26],
+        ["l_rellenos","Pimientos, berenjenas o calabacín rellenos","2 unidades",400,22,25,22],
+        ["l_pisto","Pisto con huevo","plato",380,14,25,24],
+        ["l_ensaladilla","Ensaladilla rusa","ración",400,10,30,26],
+        ["l_empanada","Empanada de atún o de carne","2 porciones",450,18,45,22],
+        ["l_croquetas","Croquetas caseras","3 unidades",280,10,24,15],
+        ["l_espinacasgarb","Espinacas con garbanzos","plato",380,18,45,14]
+      ]},
+      { cat:"Fritos, empanados y bocadillos", items:[
+        ["l_flamenquin","Flamenquín","1 unidad",400,22,25,24],
+        ["l_sanjacobo","San jacobo","1 unidad",380,22,22,23],
+        ["l_empanado","Filete empanado","1 unidad",350,30,18,18],
+        ["l_rebozado","Pollo o pescado rebozado","ración",420,28,22,24],
+        ["l_patatasfritas","Patatas fritas caseras","ración",340,4,42,17],
+        ["l_bravas","Patatas bravas o con alioli","ración",400,5,45,22],
+        ["l_berenjenamiel","Berenjenas fritas con miel","ración",350,5,35,21],
+        ["l_serranito","Serranito o bocadillo de lomo","1 unidad",650,35,60,28],
+        ["l_bocatortilla","Bocadillo de tortilla","1 unidad",550,20,60,25],
+        ["l_montadito","Montadito o media tostada","1 unidad",200,8,22,8],
         ["l_pan","Pan de la comida","2 rebanadas o 1 panecillo",150,5,28,2]
       ]},
-      { cat:"Fritos, rebozados y bocadillos", items:[
-        ["l_flamenquin","Flamenquín","1 unidad",400,22,25,24],
-        ["l_croqueta","Croqueta","1 unidad",90,3,8,5],
-        ["l_empanadilla","Empanadilla","1 unidad",180,6,18,9],
-        ["l_rebozado","Pescado o pollo rebozado","ración ~200 g",420,28,22,24],
-        ["l_patatasfritas","Ración de patatas fritas","~150 g",340,4,42,17],
-        ["l_bocadillo","Bocadillo","medio bocadillo",450,22,55,15],
-        ["l_pizza","Porción de pizza","1 porción",280,12,30,12]
+      { cat:"Tapas y picoteo", items:[
+        ["l_tabla","Tabla de embutidos y queso","para compartir, tu parte",550,30,5,45],
+        ["l_jamon","Jamón ibérico o serrano","ración",280,28,0,18],
+        ["l_queso","Queso curado","ración ~60 g",250,15,1,20],
+        ["l_aceitunas","Aceitunas y encurtidos","cuenco",120,1,3,12],
+        ["l_gambas","Gambas o langostinos cocidos","ración",150,30,0,2],
+        ["l_papasalinas","Papas aliñás","ración",250,6,32,11],
+        ["l_tapeo","Tapeo variado","3-4 tapas",600,25,40,35]
       ]},
-      { cat:"Comer fuera · platos completos", items:[
-        ["l_menudia","Menú del día completo","primero + segundo + postre",1100,45,110,48],
-        ["l_hamburguesa","Hamburguesa con patatas","completa",950,40,80,50],
-        ["l_tapas","Tapeo","3-4 tapas",600,25,40,35],
-        ["l_asiatico","Wok, ramen o similar","ración",650,30,75,25],
-        ["l_kebab","Kebab o durum","1 unidad",700,35,65,32]
+      { cat:"Fast food · salto de dieta", items:[
+        ["l_menuham","Menú de hamburguesa grande","con patatas medianas y refresco",1150,40,130,50],
+        ["l_hamsimple","Hamburguesa tipo Big Mac o Whopper","sola",550,28,45,30],
+        ["l_hamdoble","Hamburguesa doble con bacon y queso","sola",800,45,45,50],
+        ["l_nuggets","Nuggets de pollo","9 unidades",400,22,25,24],
+        ["l_patmed","Patatas fritas medianas","ración",340,4,42,17],
+        ["l_patgrande","Patatas fritas grandes","ración",490,6,60,24],
+        ["l_pizzaent","Pizza mediana entera","completa",1100,50,120,45],
+        ["l_pizzapor","Porción de pizza","1 porción",280,12,30,12],
+        ["l_kebab","Kebab o durum","1 unidad",700,35,65,32],
+        ["l_burrito","Burrito o 2 tacos","ración",650,30,65,28],
+        ["l_alitas","Alitas de pollo","8 unidades",700,45,20,48],
+        ["l_pollofrito","Pollo frito estilo americano","3 piezas",800,50,35,50],
+        ["l_perrito","Perrito caliente","1 unidad",350,13,30,20],
+        ["l_sushi","Sushi","12 piezas",550,25,85,12],
+        ["l_entrecot","Entrecot con patatas de restaurante","plato",900,55,45,55],
+        ["l_pastarest","Pasta de restaurante italiano","plato",800,28,85,38],
+        ["l_batido","Batido o milkshake","vaso grande",450,12,65,15],
+        ["l_mcflurry","Helado tipo McFlurry o sundae","1 unidad",350,8,50,12],
+        ["l_donut","Donut o bollo industrial","1 unidad",300,4,35,16]
       ]},
-      { cat:"Postres y dulces", items:[
-        ["l_postrelacteo","Natillas, flan o arroz con leche","1 unidad",180,5,25,6],
+      { cat:"Postres caseros y dulces", items:[
+        ["l_arrozleche","Arroz con leche o natillas","1 cuenco",250,7,35,8],
+        ["l_flan","Flan casero","1 unidad",200,7,28,6],
+        ["l_tartaqueso","Tarta de queso","1 porción",400,8,35,25],
+        ["l_bizcocho","Bizcocho casero","1 porción",300,5,40,13],
+        ["l_torrijas","Torrijas","2 unidades",400,8,50,18],
+        ["l_churros","Churros con chocolate","ración",550,8,60,30],
         ["l_helado","Helado","2 bolas o tarrina pequeña",250,4,30,13],
-        ["l_tarta","Porción de tarta","1 porción",350,5,40,18],
         ["l_choco3","Chocolate","3 onzas",165,2,14,11],
-        ["l_bolleria","Bollería","1 pieza",300,5,38,14]
+        ["l_frutapostre","Fruta de postre","1 pieza",80,0.5,20,0.3]
       ]},
       { cat:"Bebidas", items:[
         ["l_cana","Caña de cerveza","200 ml",90,0.7,7,0],
         ["l_tercio","Tercio de cerveza","330 ml",145,1,11,0],
         ["l_vino","Copa de vino","150 ml",125,0,4,0],
-        ["l_refresco","Refresco con azúcar","330 ml",140,0,35,0],
-        ["l_copa","Copa de destilado con refresco","1 copa",220,0,20,0]
+        ["l_tintoverano","Tinto de verano","vaso",150,0,15,0],
+        ["l_sangria","Sangría","vaso",180,0,20,0],
+        ["l_refresco","Refresco con azúcar","lata de 330 ml",140,0,35,0],
+        ["l_refrescogrande","Refresco grande de restaurante","500 ml",210,0,53,0],
+        ["l_cubata","Cubata o copa con refresco","1 copa",220,0,20,0]
       ]}
     ]
   },
-
   reglas: {
     equivalencias: [
       "1 plátano ≈ 1 pera ≈ 150 g de uvas ≈ 1 manzana grande. Intercambiables como fruta.",
@@ -1339,7 +1403,8 @@ function renderHoy(){
       <summary><span class="chev">›</span>${L.icon||"➕"} ${esc(L.nombre)}
         <span class="kc">${tl.kcal?"+"+r0(tl.kcal)+" kcal":"—"}</span></summary>
       <div class="mealbody">
-      <div class="note info"><b>Para lo que no está en el plan.</b> ${esc(L.nota)}</div>`;
+      <div class="note info"><b>Para lo que no está en el plan.</b> ${esc(L.nota)}</div>
+      <div class="grp"><input id="libreFiltro" class="buscador" type="search" placeholder="Buscar plato: lentejas, pizza, tortilla..." value="${esc(S.ui.libreFiltro||"")}"></div>`;
 
     if(tl.kcal) h += `<div class="statgrid" style="margin-top:12px">
       <div class="stat"><b>+${r0(tl.kcal)}</b><span>kcal estimadas</span></div>
@@ -1363,6 +1428,8 @@ function renderHoy(){
       h += `</details>`;
     });
 
+    h += `<div class="tiny hidden" id="libreVacio" style="padding:8px 0">Ningún plato coincide. Prueba con otra palabra o usa el más parecido.</div>`;
+
     h += `<div class="grp"><h3>Qué comiste exactamente</h3>
       <textarea id="libreNota" class="out" style="height:70px" placeholder="Ej: menú del día en el bar, lentejas, flamenquín y una caña">${esc(d.libreNota||"")}</textarea>
       <div class="tiny" style="margin-top:6px">Esto le llega al entrenador en el resumen semanal.</div></div>`;
@@ -1381,6 +1448,28 @@ function renderHoy(){
     <textarea id="notaDia" class="out" style="height:80px" placeholder="Sensaciones, digestiones, hambre, imprevistos...">${esc(d.nota||"")}</textarea></div>`;
 
   $("#v-hoy").innerHTML = h;
+  aplicarFiltroLibre();
+}
+
+/* filtra el catálogo de comida libre sin repintar, para no perder el foco */
+function aplicarFiltroLibre(){
+  const q = (S.ui.libreFiltro||"").trim().toLowerCase();
+  const cont = $('#v-hoy details.meal[data-meal="__libre"]');
+  if(!cont) return;
+  let total = 0;
+  $$("details.acc", cont).forEach(d=>{
+    let vis = 0;
+    $$(".opt", d).forEach(o=>{
+      const m = !q || o.textContent.toLowerCase().includes(q);
+      o.classList.toggle("hidden", !m);
+      if(m) vis++;
+    });
+    total += vis;
+    d.classList.toggle("hidden", !!q && !vis);
+    if(q && vis) d.open = true;
+  });
+  const av = $("#libreVacio", cont);
+  if(av) av.classList.toggle("hidden", !q || total>0);
 }
 
 function macroBox(nombre, val, obj, color){
@@ -1975,6 +2064,7 @@ document.addEventListener("input", e=>{
     st.classList.toggle("done", !!st.value);
     guardar(); actualizarStatsEntreno(); return;
   }
+  if(e.target.id==="libreFiltro"){ S.ui.libreFiltro = e.target.value; aplicarFiltroLibre(); return; }
   if(e.target.id==="libreNota"){ dia(S.ui.fecha).libreNota = e.target.value; guardar(); return; }
   if(e.target.id==="inHoraCena"){ dia(S.ui.fecha).horaCena = e.target.value; guardar(); return; }
   if(e.target.id==="notaDia"){ dia(S.ui.fecha).nota = e.target.value; guardar(); return; }
