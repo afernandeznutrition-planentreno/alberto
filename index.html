@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Plan Mikel">
+<meta name="apple-mobile-web-app-title" content="Plan Alberto">
 <meta name="description" content="Registro diario de nutrición, pasos y entrenamiento">
 <style>
 :root{
@@ -116,6 +116,23 @@ header{
   font-size:12.5px;cursor:pointer;color:var(--dim);font-weight:600
 }
 .modes button.on{background:var(--acc);border-color:var(--acc);color:#07231b}
+.modes.fam{margin:12px 0 0}
+.modes.fam button{font-size:13.5px;padding:10px}
+.modes.var{margin:6px 0 2px}
+.modes.var button{font-size:12px;padding:7px;border-radius:9px}
+.modes.var button.on{background:transparent;border-color:var(--acc);color:var(--acc)}
+.elegir{
+  display:flex;align-items:center;gap:7px;margin:12px 0 -2px;
+  font-size:12px;color:var(--dim2)
+}
+.elegir b{color:var(--txt);font-weight:600}
+.el{
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  padding:2px 5px;border-radius:5px;vertical-align:1.5px;margin-left:6px;white-space:nowrap
+}
+.el.uno{background:var(--acc);color:#07231b}
+.el.opc{background:transparent;border:1px solid var(--line);color:var(--dim2)}
+.el.var{background:transparent;border:1px solid var(--acc);color:var(--acc)}
 .note{
   background:rgba(224,163,74,.1);border-left:3px solid var(--warn);border-radius:0 8px 8px 0;
   padding:9px 11px;margin:11px 0 0;font-size:12px;color:#e8d3b2
@@ -152,6 +169,21 @@ header{
 .chip.add{color:var(--dim2);border-style:dashed}
 .badge{display:inline-block;background:rgba(224,163,74,.16);color:var(--warn);border-radius:6px;
   padding:1px 6px;font-size:10px;font-weight:700;vertical-align:middle;margin-left:4px}
+.badge.donde{background:rgba(107,155,209,.16);color:var(--hc);text-transform:uppercase;letter-spacing:.03em}
+
+/* ---------- platos ya montados ---------- */
+.plato{
+  background:var(--bg2);border:1px solid var(--line);border-radius:12px;
+  padding:11px 12px;margin-bottom:8px
+}
+.plato.on{border-color:var(--acc);background:rgba(74,222,168,.07)}
+.plato .tit{font-size:14.5px;font-weight:700;line-height:1.25}
+.plato .lleva{color:var(--dim);font-size:12px;line-height:1.4;margin-top:5px}
+.plato .nota{color:var(--dim2);font-size:11.5px;line-height:1.4;margin-top:5px}
+.plato .pie{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.plato .mac{font-size:12px;color:var(--dim2);line-height:1.35}
+.plato .mac b{color:var(--txt);font-size:13.5px}
+.catsub{color:var(--dim2);font-size:11.5px;line-height:1.4;margin:2px 0 8px;padding:0 2px}
 
 /* ---------- síntomas ---------- */
 /* ---------- buscador y contador de la comida libre ---------- */
@@ -209,6 +241,14 @@ header{
 .dsel button span{display:block;font-size:11px;color:var(--dim2);font-weight:400;margin-top:2px}
 .ex{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin:10px 0;padding:13px 14px}
 .ex .exh{display:flex;gap:9px;align-items:baseline;margin-bottom:3px}
+/* pictograma del ejercicio · SVG en línea, hereda el color del acento */
+.ex .exh{align-items:flex-start}
+.ejsvg{width:52px;height:52px;flex:0 0 52px;display:block;color:var(--acc);
+  background:var(--bg2);border-radius:9px;padding:1px;margin-top:-2px}
+.ejsvg .eq{stroke-width:1.6;opacity:.5}
+.ejsvg .fl{stroke-width:1.9;opacity:.85}
+.ejsvg .re{fill:currentColor;stroke:none;opacity:.9}
+.ejsvg .pt{stroke-width:4.6}
 .ex .exn{font-weight:650;font-size:14px;flex:1;line-height:1.3}
 .ex .exi{font-size:11.5px;color:var(--dim2);margin-bottom:9px}
 .ex .exi b{color:var(--dim);font-weight:600}
@@ -439,7 +479,24 @@ const DEFAULT_PLAN = {
     // sin aporte
     agua:        ["Agua", "—", 0, 0, 0, 0],
     cafe:        ["Café", "—", 0, 0, 0, 0],
-    infusion:    ["Infusión", "—", 0, 0, 0, 0]
+    infusion:    ["Infusión", "—", 0, 0, 0, 0],
+    // ingredientes de los guisos · solo se usan dentro de los platos montados
+    fabes120:        ["Fabes o alubias blancas (en seco)", "120 g", 372, 25.2, 58.8, 1.9],
+    lenteja110:      ["Lentejas (en seco)", "110 g", 387, 27.1, 66, 1.2],
+    garbanzo110:     ["Garbanzos (en seco)", "110 g", 400, 21.2, 67, 6.6],
+    garbanzo90:      ["Garbanzos (en seco)", "90 g", 328, 17.4, 55, 5.4],
+    compango45:      ["Compango: chorizo, morcilla y panceta", "45 g en total", 193, 7.7, 0.6, 17.6],
+    chorizo30:       ["Chorizo", "30 g", 137, 7.2, 0.6, 11.4],
+    bacalao160:      ["Bacalao desalado", "160 g", 141, 30.4, 0, 1.6],
+    carnecocido150:  ["Carne de cocido: morcillo y pollo", "150 g", 248, 36, 0, 11],
+    fideos30:        ["Fideos para la sopa", "30 g en seco", 107, 3.6, 21, 0.5],
+    ternera150:      ["Ternera para guisar", "150 g", 195, 31.5, 0, 7.5],
+    cerdo180:        ["Magro de cerdo para guisar", "180 g", 252, 37, 0, 11],
+    picada180:       ["Carne picada de ternera y cerdo", "180 g", 306, 36, 0, 18],
+    polloasado220:   ["Pollo asado: muslo y contramuslo con piel", "220 g", 374, 48.4, 0, 19.8],
+    pollotroc200:    ["Pollo troceado sin piel", "200 g", 240, 40, 0, 8],
+    tomfrito80:      ["Tomate frito", "80 g", 74, 1.2, 7, 4.5],
+    pan60:           ["Pan", "60 g", 147, 5.3, 24, 2.1]
   },
 
   /* --- 4 CATEGORÍAS. "veg" no computa --- */
@@ -746,9 +803,89 @@ const DEFAULT_PLAN = {
 
   /* --- COMIDA LIBRE: repertorio de platos caseros y de salto de dieta.
      No lleva ingredientes sueltos que ya están en el plan: esto es para lo de fuera. --- */
+  /* --- GUISOS DE CASA YA MONTADOS ---------------------------------
+     Alberto cocina de puchero casi todos los mediodías y hasta ahora eso
+     caía en «comida libre». Aquí el guiso ES el plan: cantidades cerradas,
+     pesadas en seco o en crudo, con el pan y el postre ya dentro.
+     Los macros de cada plato son la suma exacta de sus ingredientes del
+     catálogo (la verdura suma 0, como en el resto del plan).
+     ----------------------------------------------------------------- */
+  montados: {
+    nombre:"Guisos de casa · ya montados", icon:"🍲",
+    nota:"Estos platos son plan, no comida libre: las cantidades están cuadradas para tu comida del mediodía. Si marcas uno, deja la Comida de arriba sin marcar — el plato ya cuenta como la comida entera, postre incluido.",
+    cats:[
+      { cat:"Platos de cuchara", sub:"La legumbre va pesada EN SECO, antes de cocer. Si la compras ya cocida de bote, multiplica por 2,5.", items:[
+        ["mt_fabada","Fabada o alubias con compango",
+         "120 g de fabes en seco · 45 g de compango entre chorizo, morcilla y panceta · sofrito de cebolla y pimiento · 80 g de pan · 1 naranja de postre",
+         831,41.2,108.4,22.5,"Comida",
+         "Es la comida con menos proteína de todas: ese día pon 200 g de pollo o de pescado en la cena. El compango pesado es lo que hace que el plato cuadre; a ojo se va al doble.",
+         ["fabes120","compango45","verd150","pan80","naranja1"]],
+        ["mt_lentejas","Lentejas con chorizo",
+         "110 g de lentejas en seco · 30 g de chorizo · zanahoria, cebolla y pimiento · 10 g de AOVE · 80 g de pan · 1 manzana de postre",
+         890,41.7,119.6,25.6,"Comida",
+         "Con 30 g de chorizo la lenteja sigue siendo lenteja. A partir de 60 g el plato se convierte en otra cosa.",
+         ["lenteja110","chorizo30","verd150","aove10","pan80","manzana1"]],
+        ["mt_potaje","Potaje de garbanzos con bacalao y espinacas",
+         "110 g de garbanzos en seco · 160 g de bacalao desalado · 200 g de espinacas · 10 g de AOVE · 80 g de pan · 1 naranja de postre",
+         897,59.9,116.0,21.2,"Comida",
+         "El mejor plato de cuchara del plan: 58 g de proteína sin pasarte de grasa. Si puedes elegir guiso, elige este.",
+         ["garbanzo110","bacalao160","verd200","aove10","pan80","naranja1"]],
+        ["mt_cocido","Cocido o puchero con su sopa",
+         "90 g de garbanzos en seco · 150 g de carne entre morcillo y pollo · 30 g de chorizo · 30 g de fideos para la sopa · repollo, zanahoria y patata de la olla · 1 naranja de postre",
+         890,65.5,93.6,28.5,"Comida",
+         "Sopa y vuelco, los dos, en la misma comida: así es como cuadra. Si te tomas solo el vuelco, añade 60 g de pan.",
+         ["garbanzo90","carnecocido150","chorizo30","fideos30","verd200","naranja1"]]
+      ]},
+      { cat:"Arroces y pastas", sub:"El arroz y la pasta, pesados en crudo.", items:[
+        ["mt_paella","Paella o arroz con pollo y verduras",
+         "110 g de arroz crudo · 200 g de pollo troceado sin piel · judía verde, pimiento y tomate · 15 g de AOVE · 1 naranja de postre",
+         837,49.3,97.0,26.0,"Comida",
+         "110 g de arroz en crudo es una paellera llena: es la ración que te toca, no te quedes corto.",
+         ["arroz110","pollotroc200","verd150","aove15","naranja1"]],
+        ["mt_macarrones","Macarrones con tomate, chorizo y pollo",
+         "100 g de pasta en seco · 170 g de pollo · 30 g de chorizo · 80 g de tomate frito · 1 manzana de postre",
+         833,60.3,99.6,22.0,"Comida",
+         "El pollo es lo que convierte tus macarrones de siempre en una comida del plan: sin él se quedan en 30 g de proteína.",
+         ["pasta100","pollo170","chorizo30","tomfrito80","manzana1"]],
+        ["mt_bolonesa","Espaguetis a la boloñesa",
+         "100 g de pasta en seco · 180 g de carne picada · 80 g de tomate frito · cebolla y zanahoria del sofrito · 1 manzana de postre",
+         815,50.1,99.0,24.3,"Comida",
+         "Sin aceite extra al plato: la picada y el sofrito ya traen la grasa.",
+         ["pasta100","picada180","tomfrito80","verd150","manzana1"]]
+      ]},
+      { cat:"Carnes y pescados guisados", sub:"La carne y el pescado, pesados en crudo.", items:[
+        ["mt_estofado","Estofado de ternera con patatas",
+         "150 g de ternera para guisar · 350 g de patata · zanahoria, cebolla y guisantes · 15 g de AOVE · 80 g de pan · 1 manzana de postre",
+         909,45.9,120.0,25.9,"Comida",
+         "La patata del guiso ya es el hidrato del plato: no le pongas arroz al lado.",
+         ["ternera150","patata350","verd150","aove15","pan80","manzana1"]],
+        ["mt_albondigas","Albóndigas en salsa con arroz",
+         "180 g de carne picada · 90 g de arroz crudo · 80 g de tomate frito · cebolla y zanahoria · 60 g de pan · 1 naranja de postre",
+         918,50.3,114.0,27.1,"Comida",
+         "Sin aceite extra: las albóndigas se doran con el poco que suelta la carne.",
+         ["picada180","arroz90","tomfrito80","verd150","pan60","naranja1"]],
+        ["mt_polloasado","Pollo asado con patatas",
+         "220 g de pollo con piel, muslo y contramuslo · 350 g de patata al horno · 60 g de pan · 1 naranja de postre",
+         894,62.0,108.0,22.5,"Comida",
+         "Con piel está contado. Si lo comes sin piel, súmale 15 g de AOVE a las patatas o te quedas corto de calorías.",
+         ["polloasado220","patata350","verd150","pan60","naranja1"]],
+        ["mt_carnetomate","Carne con tomate",
+         "180 g de magro de cerdo · 80 g de tomate frito · 300 g de patata · 80 g de pan · 1 naranja de postre",
+         852,52.5,113.0,18.9,"Comida",
+         "Es el guiso con menos grasa de los de carne: buen plato para el día que la cena lleve salmón.",
+         ["cerdo180","tomfrito80","patata300","verd150","pan80","naranja1"]],
+        ["mt_merluza","Merluza o bacalao en salsa verde con patatas",
+         "220 g de merluza · 350 g de patata · perejil, ajo y guisantes · 15 g de AOVE · 80 g de pan · 1 naranja de postre",
+         902,55.3,116.0,21.4,"Comida",
+         "El pescado guisado sacia menos que la carne: el pan y la patata del plato no son opcionales.",
+         ["merluza220","patata350","verd150","aove15","pan80","naranja1"]]
+      ]}
+    ]
+  },
+
   libre: {
     nombre:"Comida libre · fuera del plan", icon:"➕",
-    nota:"Busca el plato que más se parezca a lo que has comido y súmalo. Son estimaciones de ración casera o de restaurante, con un margen de ±20 %: sirven para no perder el control del día, no para cuadrar al gramo.",
+    nota:"Busca el plato que más se parezca a lo que has comido y súmalo. Son estimaciones de ración casera o de restaurante, con un margen de ±20 %: sirven para no perder el control del día, no para cuadrar al gramo. Si lo que has comido es uno de los guisos de casa de ahí arriba, márcalo allí y no aquí: esos van pesados y cuentan como plan.",
     cats:[
       { cat:"Platos de cuchara y guisos", items:[
         ["l_lentchor","Lentejas con chorizo y morcilla","plato hondo",550,28,55,24],
@@ -984,6 +1121,11 @@ function pesoMeta(){
   const P = S.plan.peso; if(!P) return null;
   return P.objetivo != null ? P.objetivo : P.techo;
 }
+/* recomposición: hay tendencia que mirar pero NO hay cifra a la que llegar.
+   La báscula deja de ser una meta y pasa a ser un control de estabilidad. */
+function esRecomp(){ return !!(S.plan.peso && S.plan.peso.vista === "recomp"); }
+/* con un solo pesaje semanal, hablar de "media de 7 días" engaña: es UN dato. */
+function unPesajeSemana(){ return !!(S.plan.peso && S.plan.peso.pesajesSemana === 1); }
 
 /* ---------- episodios de ansiedad (solo si el plan declara el módulo) ---------- */
 function episodios(iso){
@@ -1090,6 +1232,8 @@ function totalDia(iso){
   comidasDelDia(iso).forEach(m=>{ const x=totalComida(iso,m); t.kcal+=x.kcal; t.p+=x.p; t.hc+=x.hc; t.g+=x.g; });
   const l = totalLibre(iso);
   t.kcal+=l.kcal; t.p+=l.p; t.hc+=l.hc; t.g+=l.g;
+  const mo = totalMontados(iso);
+  t.kcal+=mo.kcal; t.p+=mo.p; t.hc+=mo.hc; t.g+=mo.g;
   return t;
 }
 
@@ -1115,6 +1259,31 @@ function totalLibre(iso){
   return t;
 }
 function hayLibre(iso){ const l = (S.log[iso]||{}).libre||{}; return Object.values(l).some(n=>n>0); }
+
+/* =====================================================================
+   PLATOS YA MONTADOS · el plato entero, con las cantidades cuadradas.
+   Cuentan como comida del plan, no como comida libre.
+   ===================================================================== */
+function itemMontado(id){
+  if(!S.plan.montados) return null;
+  for(const c of S.plan.montados.cats){
+    const it = c.items.find(x=>x[0]===id);
+    if(it) return { id:it[0], n:it[1], lleva:it[2], kcal:+it[3], p:+it[4], hc:+it[5], g:+it[6],
+                    donde:it[7], nota:it[8], cat:c.cat };
+  }
+  return null;
+}
+function totalMontados(iso){
+  const t = {kcal:0,p:0,hc:0,g:0};
+  const sel = (S.log[iso] && S.log[iso].montados) || {};
+  Object.keys(sel).forEach(id=>{
+    const it = itemMontado(id), n = sel[id];
+    if(!it || !n) return;
+    t.kcal += it.kcal*n; t.p += it.p*n; t.hc += it.hc*n; t.g += it.g*n;
+  });
+  return t;
+}
+function hayMontados(iso){ const m = (S.log[iso]||{}).montados||{}; return Object.values(m).some(n=>n>0); }
 
 /* --- alimentos que no deben repetirse en dos comidas del mismo día --- */
 function exclusivoUsadoEn(iso, ex, exceptoMeal){
@@ -1322,6 +1491,30 @@ function renderHoy(){
       <div class="tiny" style="margin-top:10px">${esc(P.nota || "")}</div>
     </div>`;
   }
+  /* peso corporal · modo recomposición: media de 7 días y ritmo, pero sin cifra
+     objetivo. Lo que se vigila es que el peso se mueva POCO mientras el entreno sube. */
+  else if(esRecomp()){
+    const P = S.plan.peso, m0 = mediaPeso(iso,0), rt = ritmoPeso(iso);
+    const ult = d.peso != null ? d.peso : "";
+    const ref = m0 != null ? m0 : ultimoPeso(iso);
+    const banda = P.bandaSemana != null ? P.bandaSemana : 0.35;
+    h += `<div class="card">
+      <h2>⚖️ Peso <span class="rt">${esc(P.cada || "3 mañanas por semana")}</span></h2>
+      <div class="steps">
+        <input id="inPeso" type="number" step="0.1" inputmode="decimal" placeholder="${P.inicial}" value="${ult}">
+        <button class="chipbtn" id="btnPesoOk">Guardar</button>
+      </div>
+      <div class="statgrid" style="margin-top:12px">
+        <div class="stat"><b>${m0!=null?m0.toFixed(1).replace(".",",")+" kg":"—"}</b><span>${unPesajeSemana()?"peso de la semana":"media de 7 días"}</span></div>
+        <div class="stat"><b>${ref!=null?(ref-P.inicial>=0?"+":"−")+Math.abs(ref-P.inicial).toFixed(1).replace(".",","):"—"} kg</b><span>desde ${String(P.inicial).replace(".",",")} kg</span></div>
+        <div class="stat"><b>${rt!=null?(rt>=0?"+":"−")+Math.abs(rt).toFixed(2).replace(".",","):"—"}</b><span>kg/semana</span></div>
+      </div>`;
+    if(rt != null && Math.abs(rt) > banda)
+      h += `<div class="note"><b>${rt>0?"Estás subiendo":"Estás bajando"} más rápido de lo que toca.</b> ${esc(P.aviso||"")}</div>`;
+    else
+      h += `<div class="tiny" style="margin-top:10px">${esc(P.nota || "")}</div>`;
+    h += `</div>`;
+  }
   else if(S.plan.peso){
     const P = S.plan.peso, def = esDeficit(), m0 = mediaPeso(iso,0), rt = ritmoPeso(iso);
     const ult = d.peso != null ? d.peso : "";
@@ -1417,8 +1610,23 @@ function renderHoy(){
 
     if(meal.modos){
       const mid = d.modos[meal.id] || meal.modos[0].id;
-      h += `<div class="modes">` + meal.modos.map(m=>
-        `<button data-modo="${meal.id}|${m.id}" class="${m.id===mid?"on":""}">${esc(m.nombre)}</button>`).join("") + `</div>`;
+      const fams = S.plan.marcarEleccion ? [...new Set(meal.modos.map(m=>m.fam).filter(Boolean))] : [];
+      if(fams.length > 1){
+        const act = (meal.modos.find(m=>m.id===mid) || meal.modos[0]).fam;
+        h += `<div class="elegir">Elige <b>UNA</b> de las ${fams.length===2?"dos":fams.length} formas:</div>`;
+        h += `<div class="modes fam">` + fams.map(f=>{
+          const primero = meal.modos.find(m=>m.fam===f).id;
+          return `<button data-modo="${meal.id}|${primero}" class="${f===act?"on":""}">${esc(f)}</button>`;
+        }).join("") + `</div>`;
+        const hermanos = meal.modos.filter(m=>m.fam===act);
+        if(hermanos.length > 1){
+          h += `<div class="modes var">` + hermanos.map(m=>
+            `<button data-modo="${meal.id}|${m.id}" class="${m.id===mid?"on":""}">${esc(m.nombre)}</button>`).join("") + `</div>`;
+        }
+      } else {
+        h += `<div class="modes">` + meal.modos.map(m=>
+          `<button data-modo="${meal.id}|${m.id}" class="${m.id===mid?"on":""}">${esc(m.nombre)}</button>`).join("") + `</div>`;
+      }
     }
 
     if(sal) h += `<div class="note"><b>Ajuste automático aplicado.</b> ${esc(S.plan.reglas.salmorejo)}</div>`;
@@ -1440,7 +1648,19 @@ function renderHoy(){
       const oculto = grupoFuera(gr, sal, horarioDe(iso));
       const factor = (sal && gr.mitadSalmorejo) ? 0.5 : 1;
       const v = selDe(iso, meal.id, gr.id);
-      h += `<div class="grp"><h3>${esc(gr.nombre)}${gr.nota?` <em>· ${esc(gr.nota)}</em>`:""}</h3>`;
+      h += `<div class="grp"><h3>${(()=>{
+        if(!S.plan.marcarEleccion) return esc(gr.nombre);
+        const opc = /\bopcional\b/i.test(gr.nombre);
+        const nom = esc(gr.nombre.replace(/\s*opcional\s*$/i, ""));
+        if(gr.tipo === "many") return nom + (gr.ops.length === 1
+          ? ` <span class="el uno">siempre</span>`
+          : ` <span class="el var">las que quieras</span>`);
+        if(opc) return nom + ` <span class="el opc">opcional</span>`;
+        /* un grupo obligatorio con una sola opción no es una elección: es fijo */
+        return nom + (gr.ops.length === 1
+          ? ` <span class="el uno">siempre</span>`
+          : ` <span class="el uno">elige 1</span>`);
+      })()}${gr.nota?` <em>· ${esc(gr.nota)}</em>`:""}</h3>`;
       gr.ops.forEach(fid=>{
         const f = food(fid); if(!f) return;
         const on = oculto ? false : (Array.isArray(v) ? v.includes(fid) : v===fid);
@@ -1495,6 +1715,43 @@ function renderHoy(){
     (meal.notas||[]).forEach(n=> h += `<div class="note info"><b>${esc(n[0])}.</b> ${esc(n[1])}</div>`);
     h += `</div></details>`;
   });
+
+  /* platos ya montados · esto sí es plan */
+  if(S.plan.montados){
+    const M = S.plan.montados, tmo = totalMontados(iso), selm = d.montados || {};
+    h += `<details class="meal" data-meal="__montados">
+      <summary><span class="chev">›</span>${M.icon||"🍲"} ${esc(M.nombre)}
+        <span class="kc">${tmo.kcal?r0(tmo.kcal)+" kcal":"—"}</span></summary>
+      <div class="mealbody">
+      <div class="note info"><b>Elige el plato, no los grupos.</b> ${esc(M.nota)}</div>`;
+    if(tmo.kcal) h += `<div class="statgrid" style="margin-top:12px">
+      <div class="stat"><b>${r0(tmo.kcal)}</b><span>kcal de los platos</span></div>
+      <div class="stat"><b>P${r0(tmo.p)} · C${r0(tmo.hc)} · G${r0(tmo.g)}</b><span>macros</span></div></div>`;
+    M.cats.forEach(c=>{
+      const nCat = c.items.reduce((a,it)=>a+(selm[it[0]]||0),0);
+      h += `<details class="acc" ${nCat?"open":""}><summary>${esc(c.cat)}${
+        nCat?` <span class="badge">${nCat}</span>`:` <span style="color:var(--dim2);font-weight:400">· ${c.items.length}</span>`}</summary>` +
+        (c.sub?`<div class="catsub">${esc(c.sub)}</div>`:"");
+      c.items.forEach(it=>{
+        const n = selm[it[0]] || 0;
+        h += `<div class="plato ${n?"on":""}">
+          <div class="tit">${esc(it[1])} <span class="badge donde">${esc(it[7])}</span></div>
+          <div class="lleva">${esc(it[2])}</div>
+          ${it[8]?`<div class="nota">${esc(it[8])}</div>`:""}
+          <div class="pie">
+            <div class="mac"><b>${it[3]} kcal</b> · P${it[4]} · C${it[5]} · G${it[6]}</div>
+            <div class="stepper">
+              <button data-mon="${it[0]}|-1" ${n?"":"disabled"}>−</button>
+              <b>${n}</b>
+              <button data-mon="${it[0]}|1">+</button>
+            </div>
+          </div></div>`;
+      });
+      h += `</details>`;
+    });
+    if(tmo.kcal) h += `<button class="btn sec" id="btnMonReset" style="margin-top:12px">Quitar los platos de hoy</button>`;
+    h += `</div></details>`;
+  }
 
   /* comida libre · fuera del plan */
   if(S.plan.libre){
@@ -1644,7 +1901,11 @@ function ultimaSesion(iso, diaId, exIdx){
   return null;
 }
 function renderEntreno(){
-  const iso = S.ui.fecha, did = S.ui.diaEntreno;
+  const iso = S.ui.fecha;
+  /* el día guardado puede no existir en este plan (primer arranque, o un plan
+     con otros ids de día): en ese caso se cae al primero en vez de romperse. */
+  let did = S.ui.diaEntreno;
+  if(!S.plan.entrenos.some(x=>x.id===did)){ did = S.plan.entrenos[0].id; S.ui.diaEntreno = did; }
   const dEnt = S.plan.entrenos.find(x=>x.id===did);
   let h = `<div class="dsel">` + S.plan.entrenos.map(e=>
     `<button data-dia="${e.id}" class="${e.id===did?"on":""}">${esc(e.nombre)}<span>${esc(e.dia)}</span></button>`).join("") + `</div>`;
@@ -1666,7 +1927,9 @@ function renderEntreno(){
     const ult = ultimaSesion(iso, did, i);
     const sets = ses[i]||[];
     h += `<div class="ex">
-      <div class="exh"><div class="num">${i+1}</div><div class="exn">${esc(ex.n)}</div></div>
+      <div class="exh"><div class="num">${i+1}</div>${
+        (ex.icon && S.plan.iconos && S.plan.iconos[ex.icon]) ? S.plan.iconos[ex.icon] : ""
+      }<div class="exn">${esc(ex.n)}</div></div>
       <div class="exi"><b>${esc(ex.reps)}</b> · ${ex.series} ${ex.series>1?"series":"serie"}${ex.rest?` · descanso ${ex.rest>=60?(ex.rest/60).toString().replace(".5","½")+"'":ex.rest+"''"}`:" · enlazado"}</div>
       ${ex.spec?`<div class="spec">${esc(ex.spec)}</div>`:""}
       <table class="sets"><thead><tr><th></th><th>${ex.metro?"Lastre":"Peso"} kg</th><th>${ex.metro?"Metros":"Reps"}</th><th>RIR</th></tr></thead><tbody>`;
@@ -1689,7 +1952,7 @@ function renderEntreno(){
 }
 
 function actualizarStatsEntreno(){
-  const did = S.ui.diaEntreno, dEnt = S.plan.entrenos.find(x=>x.id===did);
+  const did = S.ui.diaEntreno, dEnt = (S.plan.entrenos||[]).find(x=>x.id===did);
   if(!dEnt) return;
   const ses = sesion(S.ui.fecha, did);
   let hechas=0, tot=0, vol=0;
@@ -1785,19 +2048,26 @@ function renderProgreso(){
       filas.push({ sem:"Semana del "+fechaLarga(addDias(fin,-6)).toLowerCase().replace(/^\w+ /,""),
                    m, d: prev!=null ? m-prev : null });
     }
-    const def = esDeficit(), meta = pesoMeta();
-    h += `<div class="card"><h2>⚖️ Peso · medias semanales <span class="rt">${def?"objetivo":"techo"} ${meta} kg</span></h2>`;
+    const def = esDeficit(), meta = pesoMeta(), rec = esRecomp();
+    const banda = P.bandaSemana != null ? P.bandaSemana : 0.35;
+    h += `<div class="card"><h2>⚖️ Peso · ${unPesajeSemana()?"semana a semana":"medias semanales"} <span class="rt">${
+      rec ? "±"+String(banda).replace(".",",")+" kg/semana" : (def?"objetivo":"techo")+" "+meta+" kg"}</span></h2>`;
     if(!filas.length) h += `<div class="muted">Todavía no hay pesajes. Con 2-3 por semana ya sale la media.</div>`;
     else {
       h += filas.map(f=>`<div class="frow"><div class="fn"><b>${f.m.toFixed(1).replace(".",",")} kg</b><i>${esc(f.sem)}</i></div>
         <div style="font-weight:650;font-size:12.5px;color:${
           f.d==null ? "var(--dim2)"
+          : rec ? (Math.abs(f.d) > banda ? "var(--warn)" : "var(--acc)")
           : def ? (-f.d > P.ritmoMax ? "var(--warn)" : f.d < 0 ? "var(--acc)" : "var(--dim2)")
                 : (f.d > P.ritmoMax ? "var(--warn)" : f.d < 0 ? "var(--hc)" : "var(--acc)")}">${
           f.d==null?"—":(f.d>=0?"+":"−")+Math.abs(f.d).toFixed(2).replace(".",",")}</div></div>`).join("");
       const total = filas[filas.length-1].m - P.inicial;
-      const recorrido = Math.abs(meta - P.inicial);
-      h += `<div class="tiny" style="margin-top:8px">Desde el inicio: ${(total>=0?"+":"−")+Math.abs(total).toFixed(1).replace(".",",")} kg de los ${recorrido.toFixed(0)} kg ${def?"que hay hasta el objetivo":"de margen"}. Ritmo objetivo ${String(P.ritmoObjetivo).replace(".",",")} kg/semana.</div>`;
+      if(rec)
+        h += `<div class="tiny" style="margin-top:8px">Desde el inicio: ${(total>=0?"+":"−")+Math.abs(total).toFixed(1).replace(".",",")} kg. Aquí no hay número al que llegar: mientras el peso se mueva poco y los entrenos suban, la composición está cambiando.</div>`;
+      else {
+        const recorrido = Math.abs(meta - P.inicial);
+        h += `<div class="tiny" style="margin-top:8px">Desde el inicio: ${(total>=0?"+":"−")+Math.abs(total).toFixed(1).replace(".",",")} kg de los ${recorrido.toFixed(0)} kg ${def?"que hay hasta el objetivo":"de margen"}. Ritmo objetivo ${String(P.ritmoObjetivo).replace(".",",")} kg/semana.</div>`;
+      }
     }
     h += `</div>`;
   }
@@ -2029,11 +2299,19 @@ function generarResumen(){
     const P = S.plan.peso, m0 = mediaPeso(base,0), rt = ritmoPeso(base), ref = m0!=null?m0:ultimoPeso(base);
     L.push("");
     L.push("*PESO*");
-    const def = esDeficit(), meta = pesoMeta();
-    L.push(m0!=null ? `· Media de la semana: ${m0.toFixed(1).replace(".",",")} kg` : "· Sin pesajes esta semana");
+    const def = esDeficit(), meta = pesoMeta(), rec = esRecomp();
+    const banda = P.bandaSemana != null ? P.bandaSemana : 0.35;
+    L.push(m0!=null ? `· ${unPesajeSemana()?"Peso":"Media"} de la semana: ${m0.toFixed(1).replace(".",",")} kg` : "· Sin pesajes esta semana");
+    if(rec){
+      if(rt!=null) L.push(`· Ritmo: ${(rt>=0?"+":"−")}${Math.abs(rt).toFixed(2).replace(".",",")} kg/semana (banda de recomposición ±${String(banda).replace(".",",")})`);
+      if(ref!=null) L.push(`· Total desde ${String(P.inicial).replace(".",",")} kg: ${(ref-P.inicial>=0?"+":"−")}${Math.abs(ref-P.inicial).toFixed(1).replace(".",",")} kg · sin cifra objetivo (recomposición)`);
+      if(rt!=null && Math.abs(rt) > banda) L.push(`· AVISO: el peso se mueve más de ±${String(banda).replace(".",",")} kg/semana, revisar registro antes de tocar calorías`);
+    } else {
     if(rt!=null) L.push(`· Ritmo: ${(rt>=0?"+":"−")}${Math.abs(rt).toFixed(2).replace(".",",")} kg/semana (objetivo ${def?"−":""}${String(P.ritmoObjetivo).replace(".",",")})`);
     if(ref!=null) L.push(`· Total desde ${String(P.inicial).replace(".",",")} kg: ${(ref-P.inicial>=0?"+":"−")}${Math.abs(ref-P.inicial).toFixed(1).replace(".",",")} kg · ${def?"falta hasta":"margen hasta"} ${meta} kg: ${Math.abs(meta-ref).toFixed(1).replace(".",",")} kg`);
-    if(def){
+    }
+    if(rec){ /* el aviso de recomposición ya se ha puesto arriba */ }
+    else if(def){
       if(rt!=null && -rt > P.ritmoMax) L.push("· AVISO: baja más rápido de lo previsto, valorar subir 150-200 kcal");
       else if(rt!=null && m0!=null && -rt < (P.ritmoMin!=null?P.ritmoMin:0.05)) L.push("· AVISO: semana plana o al alza, revisar registro antes de tocar calorías");
     } else {
@@ -2060,6 +2338,22 @@ function generarResumen(){
         L.push(`   – ${DIAS_SEM[dowNum(e.f)]} ${det}${e.nota&&e.nota.trim()?`: "${e.nota.trim()}"`:""}`);
       });
     }
+  }
+  const conMontados = regs.filter(r=>hayMontados(r.f));
+  if(S.plan.montados && conMontados.length){
+    L.push("");
+    L.push("*PLATOS YA MONTADOS* (cuentan como plan)");
+    const cuenta = {};
+    conMontados.forEach(r=>{
+      const sel = S.log[r.f].montados || {};
+      Object.keys(sel).forEach(id=>{ if(sel[id]) cuenta[id] = (cuenta[id]||0) + sel[id]; });
+    });
+    const total = Object.values(cuenta).reduce((a,b)=>a+b,0);
+    L.push(`· ${total} plato${total===1?"":"s"} en ${conMontados.length} día${conMontados.length===1?"":"s"}`);
+    Object.keys(cuenta).sort((a,b)=>cuenta[b]-cuenta[a]).forEach(id=>{
+      const it = itemMontado(id); if(!it) return;
+      L.push(`   – ${it.n}${cuenta[id]>1?` ×${cuenta[id]}`:""} (${it.donde.toLowerCase()})`);
+    });
   }
   const libres = regs.filter(r=>hayLibre(r.f));
   if(libres.length){
@@ -2221,6 +2515,19 @@ document.addEventListener("click", e=>{
   if(e.target.closest("#btnLibreReset")){
     const d = dia(S.ui.fecha); d.libre = {};
     guardar(); toast("Comida libre vaciada"); reRenderConservandoAbiertos(); return;
+  }
+
+  const mn = e.target.closest("[data-mon]");
+  if(mn){
+    const [id, dl] = mn.dataset.mon.split("|");
+    const d = dia(S.ui.fecha); d.montados = d.montados || {};
+    d.montados[id] = Math.max(0, (d.montados[id]||0) + (+dl));
+    if(!d.montados[id]) delete d.montados[id];
+    guardar(); reRenderConservandoAbiertos(); return;
+  }
+  if(e.target.closest("#btnMonReset")){
+    const d = dia(S.ui.fecha); d.montados = {};
+    guardar(); toast("Platos de hoy quitados"); reRenderConservandoAbiertos(); return;
   }
 
   const hb = e.target.closest("[data-hor]");
