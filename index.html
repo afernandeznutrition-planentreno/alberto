@@ -432,6 +432,7 @@ const DEFAULT_PLAN = {
     lechesemi300:["Leche semidesnatada", "300 ml", 140, 10, 14, 4.5],
     lechesemi400:["Leche semidesnatada", "400 ml", 186, 14, 19, 6],
     lecheentera400:["Leche entera", "400 ml", 250, 13, 19, 14],
+    lecheentera300:["Leche entera", "300 ml", 188, 9.8, 14.3, 10.5],
     bebidaveg400:["Bebida vegetal", "400 ml", 100, 2, 12, 5],
     yogurgriego250:["Yogur griego natural", "250 g", 242, 22, 9, 12],
     yogur250:    ["Yogur natural", "250 g", 155, 9, 12, 8],
@@ -507,7 +508,7 @@ const DEFAULT_PLAN = {
     { id:"prot", nombre:"Proteínas", icon:"🥩", ids:[
       "pollo190","pollo170","ternera200","ternera180","merluza220","salmon180","atun180","atun80",
       "huevos5","pavo80","pavo120","jamon80","legumbre350","legumbre300","prot30","prot35",
-      "lechesemi300","lechesemi400","lecheentera400","bebidaveg400","yogurgriego250","yogur250"] },
+      "lecheentera300","lecheentera400","bebidaveg400","yogurgriego250","yogur250"] },
     { id:"hc", nombre:"Hidratos de carbono", icon:"🍚", ids:[
       "avena50","avena40","granola40","pasta110","pasta100","pasta80","arroz110","arroz90","arroz75",
       "patata450","patata350","patata300","pan120","pan100","pan80","tortitas4","miel20",
@@ -539,7 +540,7 @@ const DEFAULT_PLAN = {
       { id:"desayuno", nombre:"Desayuno", icon:"🥣", hora:{A:"6:30",B:"6:30"},
         modos:[
           { id:"liquido", nombre:"Líquido", grupos:[
-            { id:"base",  nombre:"Base", tipo:"one", ops:["lechesemi300","lechesemi400","lecheentera400","bebidaveg400"] },
+            { id:"base",  nombre:"Base", tipo:"one", ops:["lecheentera300","lecheentera400","bebidaveg400"] },
             { id:"prote", nombre:"Proteína", tipo:"one", ops:["prot30"] },
             { id:"cereal",nombre:"Cereal", tipo:"one", ops:["avena50","avena40"] },
             { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","manzana1","pera1"] },
@@ -573,7 +574,7 @@ const DEFAULT_PLAN = {
           { id:"rapido", nombre:"Rápido", grupos:[
             { id:"grasa", nombre:"Frutos secos", tipo:"one", ops:["fsecos40","fsecos25"] },
             { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","manzana1","uvas150"] },
-            { id:"base",  nombre:"Bebida opcional", tipo:"one", ops:["lechesemi300"] },
+            { id:"base",  nombre:"Bebida opcional", tipo:"one", ops:["lecheentera300"] },
             { id:"plus", nombre:"Batido extra (siempre)", nota:"además de lo de arriba: 1 brik de 250 ml de leche entera + 25 g de harina de avena", tipo:"one", ops:["extra_mm"] }
           ]}
         ] },
@@ -591,7 +592,7 @@ const DEFAULT_PLAN = {
       { id:"postentreno", nombre:"Post-entreno", icon:"🥤", hora:{A:"17:30",B:"18:30"},
         modos:[
           { id:"batido", nombre:"Batido", grupos:[
-            { id:"base",  nombre:"Base", tipo:"one", ops:["lechesemi400","lechesemi300","bebidaveg400"] },
+            { id:"base",  nombre:"Base", tipo:"one", ops:["lecheentera400","lecheentera300","bebidaveg400"] },
             { id:"prote", nombre:"Proteína", tipo:"one", ops:["prot35","prot30"] },
             { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","platano2"] },
             { id:"cereal",nombre:"Cereal", tipo:"one", ops:["avena40","tortitas4","miel20"] },
@@ -619,7 +620,7 @@ const DEFAULT_PLAN = {
       { id:"desayuno", nombre:"Desayuno", icon:"🥣", hora:{A:"6:30",B:"6:30"},
         modos:[
           { id:"liquido", nombre:"Líquido", grupos:[
-            { id:"base",  nombre:"Base", tipo:"one", ops:["lechesemi300","lechesemi400","lecheentera400","bebidaveg400"] },
+            { id:"base",  nombre:"Base", tipo:"one", ops:["lecheentera300","lecheentera400","bebidaveg400"] },
             { id:"prote", nombre:"Proteína", tipo:"one", ops:["prot30"] },
             { id:"cereal",nombre:"Cereal", tipo:"one", ops:["avena50","avena40"] },
             { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","manzana1","pera1"] },
@@ -652,7 +653,7 @@ const DEFAULT_PLAN = {
           { id:"rapido", nombre:"Rápido", grupos:[
             { id:"grasa", nombre:"Frutos secos", tipo:"one", ops:["fsecos40","fsecos25"] },
             { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","manzana1","uvas150"] },
-            { id:"base",  nombre:"Bebida opcional", tipo:"one", ops:["lechesemi300"] },
+            { id:"base",  nombre:"Bebida opcional", tipo:"one", ops:["lecheentera300"] },
             { id:"plus", nombre:"Batido extra (siempre)", nota:"además de lo de arriba: 1 brik de 250 ml de leche entera + 25 g de harina de avena", tipo:"one", ops:["extra_mm"] }
           ]}
         ] },
@@ -669,7 +670,7 @@ const DEFAULT_PLAN = {
       { id:"merienda", nombre:"Merienda", icon:"🥤", hora:{A:"18:00",B:"18:00"},
         modos:[
           { id:"batido", nombre:"Batido", grupos:[
-            { id:"base",  nombre:"Base", tipo:"one", ops:["lechesemi300","bebidaveg400"] },
+            { id:"base",  nombre:"Base", tipo:"one", ops:["lecheentera300","bebidaveg400"] },
             { id:"prote", nombre:"Proteína", tipo:"one", ops:["prot30"] },
             { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","manzana1"] }
           ]},
@@ -735,7 +736,7 @@ const DEFAULT_PLAN = {
   /* --- IDEAS DE PLATOS: combinaciones ya montadas con los alimentos del plan --- */
   ideas: {
     desayuno: [
-      ["Batido completo", "300 ml de leche semi + 30 g de proteína + 50 g de avena + 1 plátano + 10 g de crema de cacahuete. Todo a la batidora, dos minutos."],
+      ["Batido completo", "300 ml de leche entera + 30 g de proteína + 50 g de avena + 1 plátano + 10 g de crema de cacahuete. Todo a la batidora, dos minutos."],
       ["Avena de la noche antes", "50 g de avena en 300 ml de leche en un bote, a la nevera. Por la mañana añade 30 g de proteína y el plátano en rodajas. Cero tiempo a las 6:30."],
       ["Porridge caliente", "50 g de avena cocida en la leche, y la proteína al final fuera del fuego para que no se corte. Plátano por encima y 10 g de crema de cacahuete."],
       ["Tostadas de jamón", "100 g de pan + 80 g de jamón serrano + 10 g de AOVE + 1 naranja."],
@@ -756,7 +757,7 @@ const DEFAULT_PLAN = {
       ["Táper de tortilla y patata", "3 huevos + 2 claras + 450 g de patata cocida + 150 g de calabacín dentro de la tortilla + 15 g de AOVE. Frío está igual de bueno, ideal para el trabajo."]
     ],
     postentreno: [
-      ["Batido de siempre", "400 ml de leche semi + 30 g de proteína + 1 plátano + 40 g de avena."],
+      ["Batido de siempre", "400 ml de leche entera + 30 g de proteína + 1 plátano + 40 g de avena."],
       ["Batido exprés", "400 ml de leche + 35 g de proteína + 2 plátanos. Sin avena, para cuando hay prisa."],
       ["Bocadillo de vuelta", "120 g de pan + 120 g de pavo + 1 manzana. Si el batido ya te cansa."],
       ["Tortitas con miel", "4 tortitas de arroz + 20 g de miel + batido de 300 ml de leche con 30 g de proteína."]
@@ -1017,7 +1018,7 @@ const DEFAULT_PLAN = {
     equivalencias: [
       "1 plátano ≈ 1 pera ≈ 150 g de uvas ≈ 1 manzana grande. Intercambiables como fruta.",
       "350 g de legumbre cocida hacen de proteína Y de hidrato a la vez: ese día no añadas pasta ni arroz.",
-      "400 ml de leche entera aportan unas 65 kcal más que la semi: útil los días que cuesta llegar."
+      "La leche, siempre entera: 400 ml aportan unas 65 kcal más que la semi sin comer más volumen."
     ]
   },
   recordatorios: [
