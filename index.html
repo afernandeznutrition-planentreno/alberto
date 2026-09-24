@@ -461,6 +461,9 @@ const DEFAULT_PLAN = {
     cremacacah10:["Crema de cacahuete", "10 g", 60, 2.6, 1.6, 5],
     fsecos40:    ["Frutos secos", "40 g", 250, 6.5, 5, 22],
     fsecos25:    ["Frutos secos", "25 g", 156, 4, 3, 14],
+    // extras del 24/09 · van ENCIMA de lo que ya come, para llegar a las kcal
+    extra_mm:    ["Batido extra: leche entera + harina de avena", "1 brik de 250 ml + 25 g", 251, 11.6, 26.4, 10.5],
+    extra_post:  ["Extra del batido: crema de arroz + frutos secos", "40 g + 15 g", 246, 5.2, 35.4, 8.8],
     // frutas
     platano1:    ["Plátano", "1 pieza", 105, 1.3, 27, 0.4],
     platano2:    ["Plátanos", "2 piezas", 210, 2.6, 54, 0.8],
@@ -510,7 +513,8 @@ const DEFAULT_PLAN = {
       "patata450","patata350","patata300","pan120","pan100","pan80","tortitas4","miel20",
       "platano1","platano2","manzana1","naranja1","pera1","uvas150","zumo200"] },
     { id:"gra", nombre:"Grasas", icon:"🥑", ids:[
-      "aove15","aove10","cremacacah15","cremacacah10","fsecos40","fsecos25","queso30"] },
+      "aove15","aove10","cremacacah15","cremacacah10","fsecos40","fsecos25","queso30",
+      "extra_mm","extra_post"] },
     { id:"veg", nombre:"Vegetales", icon:"🥬", cero:true,
       nota:"Verdura, tomate natural, cremas de verdura y zanahoria · calorías despreciables: no computan en el total del día.",
       ids:["verd100","verd150","verd200","tomatenat150","cremaverd250","zanahoria100"] }
@@ -557,17 +561,20 @@ const DEFAULT_PLAN = {
           { id:"salado", nombre:"Salado", grupos:[
             { id:"pan",   nombre:"Hidrato", tipo:"one", ops:["pan80"] },
             { id:"prote", nombre:"Proteína", tipo:"one", ops:["atun80","pavo80"] },
-            { id:"fruta", nombre:"Fruta", tipo:"one", ops:["manzana1","platano1","naranja1"] }
+            { id:"fruta", nombre:"Fruta", tipo:"one", ops:["manzana1","platano1","naranja1"] },
+            { id:"plus", nombre:"Batido extra (siempre)", nota:"además de lo de arriba: 1 brik de 250 ml de leche entera + 25 g de harina de avena", tipo:"one", ops:["extra_mm"] }
           ]},
           { id:"lacteo", nombre:"Lácteo", grupos:[
             { id:"lacteo",nombre:"Lácteo", tipo:"one", ops:["yogurgriego250"] },
             { id:"cereal",nombre:"Cereal", tipo:"one", ops:["granola40","avena40"] },
-            { id:"fruta", nombre:"Fruta opcional", tipo:"one", ops:["manzana1","platano1"] }
+            { id:"fruta", nombre:"Fruta opcional", tipo:"one", ops:["manzana1","platano1"] },
+            { id:"plus", nombre:"Batido extra (siempre)", nota:"además de lo de arriba: 1 brik de 250 ml de leche entera + 25 g de harina de avena", tipo:"one", ops:["extra_mm"] }
           ]},
           { id:"rapido", nombre:"Rápido", grupos:[
             { id:"grasa", nombre:"Frutos secos", tipo:"one", ops:["fsecos40","fsecos25"] },
             { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","manzana1","uvas150"] },
-            { id:"base",  nombre:"Bebida opcional", tipo:"one", ops:["lechesemi300"] }
+            { id:"base",  nombre:"Bebida opcional", tipo:"one", ops:["lechesemi300"] },
+            { id:"plus", nombre:"Batido extra (siempre)", nota:"además de lo de arriba: 1 brik de 250 ml de leche entera + 25 g de harina de avena", tipo:"one", ops:["extra_mm"] }
           ]}
         ] },
 
@@ -587,7 +594,8 @@ const DEFAULT_PLAN = {
             { id:"base",  nombre:"Base", tipo:"one", ops:["lechesemi400","lechesemi300","bebidaveg400"] },
             { id:"prote", nombre:"Proteína", tipo:"one", ops:["prot35","prot30"] },
             { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","platano2"] },
-            { id:"cereal",nombre:"Cereal", tipo:"one", ops:["avena40","tortitas4","miel20"] }
+            { id:"cereal",nombre:"Cereal", tipo:"one", ops:["avena40","tortitas4","miel20"] },
+            { id:"plus", nombre:"Extra del batido (siempre)", nota:"dentro del mismo batido: 40 g de crema de arroz + 15 g de frutos secos", tipo:"one", ops:["extra_post"] }
           ]},
           { id:"solido", nombre:"Sólido", grupos:[
             { id:"pan",   nombre:"Hidrato", tipo:"one", ops:["pan120","pan100"] },
@@ -632,17 +640,20 @@ const DEFAULT_PLAN = {
           { id:"salado", nombre:"Salado", grupos:[
             { id:"pan",   nombre:"Hidrato", tipo:"one", ops:["pan80"] },
             { id:"prote", nombre:"Proteína", tipo:"one", ops:["atun80","pavo80"] },
-            { id:"fruta", nombre:"Fruta", tipo:"one", ops:["manzana1","platano1","naranja1"] }
+            { id:"fruta", nombre:"Fruta", tipo:"one", ops:["manzana1","platano1","naranja1"] },
+            { id:"plus", nombre:"Batido extra (siempre)", nota:"además de lo de arriba: 1 brik de 250 ml de leche entera + 25 g de harina de avena", tipo:"one", ops:["extra_mm"] }
           ]},
           { id:"lacteo", nombre:"Lácteo", grupos:[
             { id:"lacteo",nombre:"Lácteo", tipo:"one", ops:["yogurgriego250"] },
             { id:"cereal",nombre:"Cereal", tipo:"one", ops:["granola40","avena40"] },
-            { id:"fruta", nombre:"Fruta opcional", tipo:"one", ops:["manzana1","platano1"] }
+            { id:"fruta", nombre:"Fruta opcional", tipo:"one", ops:["manzana1","platano1"] },
+            { id:"plus", nombre:"Batido extra (siempre)", nota:"además de lo de arriba: 1 brik de 250 ml de leche entera + 25 g de harina de avena", tipo:"one", ops:["extra_mm"] }
           ]},
           { id:"rapido", nombre:"Rápido", grupos:[
             { id:"grasa", nombre:"Frutos secos", tipo:"one", ops:["fsecos40","fsecos25"] },
             { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","manzana1","uvas150"] },
-            { id:"base",  nombre:"Bebida opcional", tipo:"one", ops:["lechesemi300"] }
+            { id:"base",  nombre:"Bebida opcional", tipo:"one", ops:["lechesemi300"] },
+            { id:"plus", nombre:"Batido extra (siempre)", nota:"además de lo de arriba: 1 brik de 250 ml de leche entera + 25 g de harina de avena", tipo:"one", ops:["extra_mm"] }
           ]}
         ] },
 
