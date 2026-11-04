@@ -465,6 +465,10 @@ const DEFAULT_PLAN = {
     // extras del 24/09 · van ENCIMA de lo que ya come, para llegar a las kcal
     extra_mm:    ["Batido extra: leche entera + harina de avena", "1 brik de 250 ml + 25 g", 251, 11.6, 26.4, 10.5],
     extra_post:  ["Extra del batido: crema de arroz + frutos secos", "40 g + 15 g", 246, 5.2, 35.4, 8.8],
+    // nov 2026 · batidos para llegar a las calorías sin tener que comer más volumen
+    harinaav40:  ["Harina de avena", "40 g", 152, 5.5, 23, 3],
+    cremaarroz40:["Crema de arroz", "40 g", 152, 2.8, 33.6, 0.4],
+    batido_res:  ["Batido extra: leche entera + proteína + harina de avena + crema de arroz", "300 ml + 30 g + 40 g + 30 g", 574, 41.4, 64.5, 15.8],
     // frutas
     platano1:    ["Plátano", "1 pieza", 105, 1.3, 27, 0.4],
     platano2:    ["Plátanos", "2 piezas", 210, 2.6, 54, 0.8],
@@ -510,12 +514,12 @@ const DEFAULT_PLAN = {
       "huevos5","pavo80","pavo120","jamon80","legumbre350","legumbre300","prot30","prot35",
       "lecheentera300","lecheentera400","bebidaveg400","yogurgriego250","yogur250"] },
     { id:"hc", nombre:"Hidratos de carbono", icon:"🍚", ids:[
-      "avena50","avena40","granola40","pasta110","pasta100","pasta80","arroz110","arroz90","arroz75",
+      "avena50","avena40","harinaav40","cremaarroz40","granola40","pasta110","pasta100","pasta80","arroz110","arroz90","arroz75",
       "patata450","patata350","patata300","pan120","pan100","pan80","tortitas4","miel20",
       "platano1","platano2","manzana1","naranja1","pera1","uvas150","zumo200"] },
     { id:"gra", nombre:"Grasas", icon:"🥑", ids:[
       "aove15","aove10","cremacacah15","cremacacah10","fsecos40","fsecos25","queso30",
-      "extra_mm","extra_post"] },
+      "extra_mm","extra_post","batido_res"] },
     { id:"veg", nombre:"Vegetales", icon:"🥬", cero:true,
       nota:"Verdura, tomate natural, cremas de verdura y zanahoria · calorías despreciables: no computan en el total del día.",
       ids:["verd100","verd150","verd200","tomatenat150","cremaverd250","zanahoria100"] }
@@ -612,7 +616,8 @@ const DEFAULT_PLAN = {
           { id:"veg",  nombre:"Verdura", tipo:"one", ops:["verd100","verd150","tomatenat150","cremaverd250","zanahoria100"] },
           { id:"grasa",nombre:"Grasa", tipo:"one", ops:["aove15","aove10"] },
           { id:"queso",nombre:"Queso opcional", tipo:"one", ops:["queso30"] },
-          { id:"postre",nombre:"Postre", tipo:"many", ops:["yogur250","manzana1","platano1","naranja1"] }
+          { id:"postre",nombre:"Postre", tipo:"many", ops:["yogur250","manzana1","platano1","naranja1"] },
+          { id:"rescate",nombre:"Batido extra opcional", nota:"solo si antes de cenar vas más de 500 kcal por debajo: 300 ml de leche entera + 1 cazo de proteína + 40 g de harina de avena + 30 g de crema de arroz", tipo:"one", ops:["batido_res"] }
         ] }
     ],
 
@@ -672,7 +677,8 @@ const DEFAULT_PLAN = {
           { id:"batido", nombre:"Batido", grupos:[
             { id:"base",  nombre:"Base", tipo:"one", ops:["lecheentera300","bebidaveg400"] },
             { id:"prote", nombre:"Proteína", tipo:"one", ops:["prot30"] },
-            { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","manzana1"] }
+            { id:"fruta", nombre:"Fruta", tipo:"one", ops:["platano1","manzana1"] },
+            { id:"cerealx", nombre:"Harina de avena o crema de arroz opcional", nota:"dentro del batido, los días que vayas corto", tipo:"one", ops:["harinaav40","cremaarroz40"] }
           ]},
           { id:"solido", nombre:"Sólido", grupos:[
             { id:"lacteo",nombre:"Lácteo", tipo:"one", ops:["yogurgriego250","yogur250"] },
@@ -688,7 +694,8 @@ const DEFAULT_PLAN = {
           { id:"veg",  nombre:"Verdura", tipo:"one", ops:["verd100","verd150","tomatenat150","cremaverd250","zanahoria100"] },
           { id:"grasa",nombre:"Grasa", tipo:"one", ops:["aove15","aove10"] },
           { id:"queso",nombre:"Queso opcional", tipo:"one", ops:["queso30"] },
-          { id:"postre",nombre:"Postre", tipo:"many", ops:["yogur250","manzana1","platano1","naranja1"] }
+          { id:"postre",nombre:"Postre", tipo:"many", ops:["yogur250","manzana1","platano1","naranja1"] },
+          { id:"rescate",nombre:"Batido extra opcional", nota:"solo si antes de cenar vas más de 500 kcal por debajo: 300 ml de leche entera + 1 cazo de proteína + 40 g de harina de avena + 30 g de crema de arroz", tipo:"one", ops:["batido_res"] }
         ] }
     ]
   },
@@ -697,7 +704,7 @@ const DEFAULT_PLAN = {
   entrenos: [
     { id:"d1", nombre:"Día 1 · Pecho y tríceps", dia:"Lunes", ejercicios:[
       { n:"Press inclinado en multipower", reps:"5-8 / 8-10", series:3, rest:180, spec:"Top set + 2 back off (-25 % peso)" },
-      { n:"Fondos", reps:"Al fallo / 5-8", series:3, rest:180, spec:"1ª sin peso al fallo · 2 lastradas" },
+      { n:"Fondos", reps:"3-4 / máx.", series:3, rest:180, spec:"Top set + 2 back off. 1ª serie con un lastre ligero que te deje hacer 3-4 repeticiones; las 2 back off SIN lastre, todas las que salgan limpias dejando 1 en reserva. En la columna de peso apunta el lastre (0 en las back off). Cuando el top set salga a 5, sube 1,25-2,5 kg." },
       { n:"Contractora", reps:"10-15", series:3, rest:180 },
       { n:"Tríceps en polea con cuerda", reps:"10-15", series:2, rest:180 },
       { n:"Press mancuernas plano", reps:"8-10", series:2, rest:180 },
@@ -706,19 +713,23 @@ const DEFAULT_PLAN = {
     ]},
     { id:"d2", nombre:"Día 2 · Espalda y bíceps", dia:"Martes", ejercicios:[
       { n:"Remo con barra", reps:"5-8 / 8-10", series:3, rest:180, spec:"Top set + 2 back off (-25 % peso)" },
-      { n:"Dominadas", reps:"Al fallo / 5-8", series:3, rest:180, spec:"1ª sin peso al fallo · 2 lastradas" },
+      { n:"Dominadas", reps:"3-4 / máx.", series:3, rest:180, spec:"Top set + 2 back off. 1ª serie con un lastre ligero que te deje hacer 3-4 repeticiones; las 2 back off SIN lastre, todas las que salgan limpias dejando 1 en reserva. En la columna de peso apunta el lastre (0 en las back off). Cuando el top set salga a 5, sube 1,25-2,5 kg." },
       { n:"Jalón al pecho, agarre abierto", reps:"8-12", series:2, rest:180 },
       { n:"Elevación lateral en máquina", reps:"10-15", series:3, rest:180 },
       { n:"Facepull en polea", reps:"10-15", series:2, rest:180 },
       { n:"Curl bíceps barra olímpica", reps:"5-8", series:3, rest:180 },
       { n:"Curl predicador o ballesian", reps:"8-12", series:2, rest:180 }
     ]},
-    { id:"d3", nombre:"Día 3 · Pierna completa", dia:"Miércoles", ejercicios:[
-      { n:"Peso muerto rumano con barra", reps:"5-8 / 8-10", series:3, rest:180, spec:"Top set + 2 back off (-25 % peso)" },
-      { n:"Prensa 45°", reps:"5-8 / 8-10", series:3, rest:180, spec:"Top set + 2 back off (-25 % peso)" },
-      { n:"Curl femoral tumbado", reps:"10-15", series:3, rest:180, spec:"2 series + 1 drop set al fallo" },
-      { n:"Extensión de cuádriceps", reps:"10-15", series:3, rest:180, spec:"2 series + 1 drop set al fallo" },
-      { n:"Gemelo de pie en máquina", reps:"12-15", series:3, rest:180 }
+    /* nov 2026 · lesión lumbar: id nuevo para que el histórico de la pierna anterior
+       (rumano, prensa con top set…) no se mezcle con estos ejercicios */
+    { id:"d3l", nombre:"Día 3 · Pierna y core", dia:"Miércoles", ejercicios:[
+      { n:"Curl femoral sentado", reps:"15-20", series:3, rest:120, spec:"Por la lesión lumbar: más repeticiones con menos peso. Deja 2 en reserva y sin drop set." },
+      { n:"Extensión de cuádriceps", reps:"15-20", series:3, rest:120, spec:"Más repeticiones con menos peso. Deja 2 en reserva y sin drop set." },
+      { n:"Prensa", reps:"15-20", series:3, rest:150, spec:"CON CUIDADO. Carga moderada, sin top set ni fallo (2-3 en reserva). Zona lumbar y glúteo pegados al respaldo todo el recorrido: baja solo hasta donde la pelvis no se despega. Si molesta la espalda, para." },
+      { n:"Hip thrust", reps:"12-15", series:3, rest:120, spec:"Recomendado por el fisio. Barbilla al pecho y costillas abajo; sube hasta alinear la cadera, sin arquear la zona lumbar arriba. Aprieta el glúteo 1 segundo." },
+      { n:"Gemelo en máquina", reps:"15-20", series:3, rest:90, spec:"Si la máquina de pie te carga la espalda, hazlo sentado o en la prensa." },
+      { n:"Crunch en polea", reps:"12-15", series:3, rest:90, spec:"De rodillas, enrolla el tronco llevando el pecho hacia la pelvis. Que trabaje el abdomen, no los brazos ni la cadera." },
+      { n:"Crunch en máquina", reps:"12-15", series:3, rest:90, spec:"Recorrido controlado, suelta el aire al cerrar. Si notas la zona lumbar, baja peso o recorrido." }
     ]},
     { id:"d4", nombre:"Día 4 · Torso", dia:"Jueves", ejercicios:[
       { n:"Press máquina neutro", reps:"5-8 / 8-10", series:3, rest:180, spec:"Top set + 2 back off (-25 % peso)" },
@@ -1026,6 +1037,7 @@ const DEFAULT_PLAN = {
     "Pésate 3-4 mañanas por semana, en ayunas. Lo que vale es la media de 7 días, no el dato del día.",
     "Ritmo correcto: 0,1-0,2 kg por semana. Más rápido que eso es grasa.",
     "Objetivo de pasos: 8.000. Cada 1.000 pasos extra son unas 40 kcal más que puedes comer.",
+    "Antes de cenar, mira cuántas kcal llevas. Si vas más de 500 por debajo, añade el batido extra de la cena: se bebe en dos minutos y no llena como un plato.",
     "Suplementos: vitamina D en el desayuno · creatina 5 g al día a cualquier hora · proteína en polvo post-entreno."
   ]
 };
